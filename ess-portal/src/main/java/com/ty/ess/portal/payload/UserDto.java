@@ -18,5 +18,4 @@ public class UserDto {
 	private String email;
 	@Size(min = 8)
 	private String password;
-
 }

@@ -34,6 +34,7 @@ public class EmployeeLeaveController {
 	@Operation(description = "To Apply Leave Request", summary = "Leave will be Applied")
 	@ApiResponses(value = @ApiResponse(description = "OK", responseCode = "200"))
 	@PostMapping("/{employeeId}")
+	@PreAuthorize("hasRole('EMPLOYEE')")
 	public ResponseEntity<ResponseStructure<EmployeeLeave>> createLeaveRequest(@PathVariable int employeeId,
 			@Valid @RequestBody EmployeeLeaveDto employeeLeaveRequest, BindingResult result) {
 
@@ -44,6 +45,7 @@ public class EmployeeLeaveController {
 	@Operation(description = "Get Employee Leave List", summary = "Leave list are found")
 	@ApiResponses(value = @ApiResponse(description = "OK", responseCode = "200"))
 	@GetMapping("/{employeeId}")
+	@PreAuthorize("hasRole('EMPLOYEE')")
 	public ResponseEntity<ResponseStructure<List<EmployeeLeave>>> findLeaveListByEmployeeId(
 			@PathVariable int employeeId) {
 		return employeeLeaveService.findEmployeeLeaveByEmployeeId(employeeId);

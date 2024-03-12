@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.ty.ess.portal.entity.EmployeeLeave;
 
 public interface EmployeeLeaveRepository extends JpaRepository<EmployeeLeave, Integer> {
-	
-	//custom method for find all leaves of particular employee
+
+	// custom method for find all leaves of particular employee
 	List<EmployeeLeave> findByUserUserId(int userId);
 }

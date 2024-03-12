@@ -1,8 +1,11 @@
 package com.ty.ess.portal.dao;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ty.ess.portal.entity.User;
+import com.ty.ess.portal.exception.UserNotFoundException;
 import com.ty.ess.portal.repository.UserRepository;
 
 public class UserDao {
@@ -15,7 +18,18 @@ public class UserDao {
 	}
 
 	public User findUserByUserId(int id) {
-		return userRepository.findById(id).get();
+		
+		Optional<User> user = userRepository.findById(id);
+		if(user.isPresent())
+		{
+			return user.get();
+		}
+		else {
+			throw new UserNotFoundException();
+		}
 	}
 
 }
+   
+
+

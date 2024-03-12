@@ -61,7 +61,7 @@ public class UserService {
 		response.setMessage("Success");
 		response.setData(user);
 
-		return new ResponseEntity<ResponseStructure<User>>(HttpStatus.CREATED);
+		return new ResponseEntity<ResponseStructure<User>>(response, HttpStatus.CREATED);
 
 	}
 

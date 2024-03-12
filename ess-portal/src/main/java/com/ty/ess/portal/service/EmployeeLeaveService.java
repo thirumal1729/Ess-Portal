@@ -15,6 +15,7 @@ import com.ty.ess.portal.dao.UserDao;
 import com.ty.ess.portal.dto.ResponseStructure;
 import com.ty.ess.portal.entity.EmployeeLeave;
 import com.ty.ess.portal.entity.User;
+import com.ty.ess.portal.exception.EmployeeLeaveRequestEmptyException;
 import com.ty.ess.portal.exception.ValidationException;
 import com.ty.ess.portal.payload.EmployeeLeaveDto;
 import com.ty.ess.portal.util.LeaveStatus;
@@ -61,7 +62,7 @@ public class EmployeeLeaveService {
 
 			return new ResponseEntity<ResponseStructure<List<EmployeeLeave>>>(response, HttpStatus.OK);
 		} else {
-			throw new UsernameNotFoundException("Employee Not Found..!");
+			throw new EmployeeLeaveRequestEmptyException("Employee leave request is empty");
 		}
 
 	}
@@ -95,15 +96,16 @@ public class EmployeeLeaveService {
 		}
 	}
 	
-	public ResponseEntity<ResponseStructure<EmployeeLeave>> getAllLeaveRequests() {
+	public ResponseEntity<ResponseStructure<List<EmployeeLeave>>> getAllLeaveRequests() {
 		List<EmployeeLeave> employeeLeaves = this.employeeLeaveDao.findAllLeaveRequests();
 		if(!employeeLeaves.isEmpty()) {
-			ResponseStructure<EmployeeLeave> responseStructure = new ResponseStructure<EmployeeLeave>();
+			ResponseStructure<List<EmployeeLeave>> responseStructure = new ResponseStructure<List<EmployeeLeave>>();
 			responseStructure.builder().statusCode(HttpStatus.OK.value()).message("Success").data(employeeLeaves).build();
 			
-			return new ResponseEntity<ResponseStructure<EmployeeLeave>>(responseStructure, HttpStatus.OK);
+			return new ResponseEntity<ResponseStructure<List<EmployeeLeave>>>(responseStructure, HttpStatus.OK);
 		} else {
-			throw null;
+			throw new EmployeeLeaveRequestEmptyException("Employee leave request is empty");
 		}
 	}
 }
+

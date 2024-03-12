@@ -38,5 +38,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.FORBIDDEN);
 	}
+	
+	@ExceptionHandler(EmployeeLeaveRequestEmptyException.class)
+	public ResponseEntity<ResponseStructure<String>> catchEmployeeLeaveRequestEmptyException(EmployeeLeaveRequestEmptyException exception) {
+
+		ResponseStructure<String> responseStructure = new ResponseStructure<String>();
+		responseStructure.builder().statusCode(HttpStatus.NO_CONTENT.value()).message(exception.getMessage()).data("NO CONTENT").build();
+		
+		return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.NO_CONTENT);
+	}
 
 }

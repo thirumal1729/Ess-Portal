@@ -38,9 +38,9 @@ public class SecurityConfig {
 
 		http.csrf(csrf -> csrf.disable())
 			.cors(cors -> cors.disable())
-			.authorizeHttpRequests(auth -> auth.requestMatchers("/home/**")
+			.authorizeHttpRequests(auth -> auth.requestMatchers("/employeeLeave/**")
 					.authenticated()
-					.requestMatchers("/auth/login","/auth/create-user","/auth/create-admin")
+					.requestMatchers("/auth/login","/users/**")
 					.permitAll()
 					.anyRequest()
 					.authenticated())

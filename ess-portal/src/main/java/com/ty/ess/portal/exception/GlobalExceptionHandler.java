@@ -2,6 +2,7 @@ package com.ty.ess.portal.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -17,6 +18,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		responseStructure.builder().statusCode(HttpStatus.BAD_REQUEST.value()).message(exception.getMessage())
 				.data("Please Enter the valid details").build();
 		return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(BadCredentialsException.class)
+	public ResponseEntity<ResponseStructure<String>> catchBadCredentialsException(BadCredentialsException exception) {
+
+		ResponseStructure<String> responseStructure = new ResponseStructure<String>();
+		responseStructure.builder().statusCode(HttpStatus.FORBIDDEN.value()).message(exception.getMessage()).data("Credentials Invalid !!").build();
+		
+		return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.FORBIDDEN);
 	}
 
 }

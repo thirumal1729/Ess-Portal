@@ -18,5 +18,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 				.data("Please Enter the valid details").build();
 		return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<ResponseStructure<String>> catchUserNotFoundException(UserNotFoundException exception) {
+
+		ResponseStructure<String> responseStructure = new ResponseStructure<String>();
+
+		responseStructure.builder().statusCode(HttpStatus.BAD_REQUEST.value()).message(exception.getMessage())
+				.data("Please Enter ").build();
+		return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.BAD_REQUEST);
+	}
 
 }

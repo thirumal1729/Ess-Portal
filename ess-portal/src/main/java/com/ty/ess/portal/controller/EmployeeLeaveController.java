@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,5 +50,23 @@ public class EmployeeLeaveController {
 			@PathVariable int employeeId) {
 		return employeeLeaveService.findEmployeeLeaveByEmployeeId(employeeId);
 	}
+	
+	@PutMapping("/{leaveId}/accept")
+	@PreAuthorize("hasRole('MANAGER')")
+	public ResponseEntity<ResponseStructure<EmployeeLeave>> acceptLeave(@PathVariable int leaveId) {
+		return this.employeeLeaveService.acceptLeave(leaveId);
+	}
+	
+	@PutMapping("/{leaveId}/reject")
+	@PreAuthorize("hasRole('MANAGER')")
+	public ResponseEntity<ResponseStructure<EmployeeLeave>> rejectingLeave(@PathVariable int leaveId) {
+		return this.employeeLeaveService.acceptLeave(leaveId);
+	}
 
+	@GetMapping("/all")
+	@PreAuthorize("hasRole('MANAGER')")
+	public ResponseEntity<ResponseStructure<List<EmployeeLeave>>> getAllLeaveRequests() {
+		return this.employeeLeaveService.getAllLeaveRequests();
+	}
+	
 }

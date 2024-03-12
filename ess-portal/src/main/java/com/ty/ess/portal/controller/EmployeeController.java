@@ -16,6 +16,7 @@ import com.ty.ess.portal.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
@@ -36,7 +37,7 @@ public class EmployeeController {
 	@Operation(description = "To save manager info", summary = "manager will be saved")
 	@ApiResponses(value = @ApiResponse(description = "Manager Created", responseCode = "201"))
 	@PostMapping("/manager")
-	public ResponseEntity<ResponseStructure<User>> saveManager(@RequestBody UserDto userDto, BindingResult result) {
+	public ResponseEntity<ResponseStructure<User>> saveManager(@Valid @RequestBody UserDto userDto, BindingResult result) {
 
 		return userService.saveManager(userDto, result);
 

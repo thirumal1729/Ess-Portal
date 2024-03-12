@@ -8,6 +8,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -40,6 +41,9 @@ public class UserService {
 
 	@Autowired
 	private JwtHelper helper;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	public ResponseEntity<ResponseStructure<User>> saveEmployee(UserDto userDto, BindingResult result) {
 
@@ -51,8 +55,10 @@ public class UserService {
 			throw new ValidationException(message);
 		}
 		User user = new User();
-		user.builder().name(userDto.getName()).email(userDto.getEmail()).password(userDto.getPassword())
-				.userType(UserType.EMPLOYEE).build();
+		user.setName(userDto.getName());
+		user.setEmail(userDto.getEmail());
+		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+		user.setUserType(UserType.EMPLOYEE);
 
 		user = userDao.saveUser(user);
 
@@ -77,7 +83,7 @@ public class UserService {
 		User user = new User();
 		user.setName(userDto.getName());
 		user.setEmail(userDto.getEmail());
-		user.setPassword(userDto.getPassword());
+		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		user.setUserType(UserType.MANAGER);
 
 		user = userDao.saveUser(user);
@@ -87,7 +93,7 @@ public class UserService {
 		response.setMessage("Success");
 		response.setData(user);
 
-		return new ResponseEntity<ResponseStructure<User>>(HttpStatus.CREATED);
+		return new ResponseEntity<ResponseStructure<User>>(response,HttpStatus.CREATED);
 
 	}
 
@@ -101,8 +107,9 @@ public class UserService {
 		JwtResponse response = JwtResponse.builder().jwtToken(token).username(userDetails.getUsername()).build();
 
 		ResponseStructure<JwtResponse> responseStructure = new ResponseStructure<JwtResponse>();
-		responseStructure.builder().statusCode(HttpStatus.OK.value()).message("Logged in successfully...!")
-				.data(response).build();
+		responseStructure.setStatusCode(HttpStatus.OK.value());
+		responseStructure.setMessage("Logged in successfullu...!");
+		responseStructure.setData(response);
 
 		return new ResponseEntity<ResponseStructure<JwtResponse>>(responseStructure, HttpStatus.OK);
 

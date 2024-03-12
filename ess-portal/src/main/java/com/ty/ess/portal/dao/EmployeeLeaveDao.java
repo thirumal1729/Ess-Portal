@@ -34,4 +34,8 @@ public class EmployeeLeaveDao {
 			return null;
 		}
 	}
+	
+	public List<EmployeeLeave> findAllLeaveRequests() {
+		return this.employeeRepository.findAll();
+	}
 }

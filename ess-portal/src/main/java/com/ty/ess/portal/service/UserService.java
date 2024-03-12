@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import com.ty.ess.portal.dao.EmployeeLeaveDao;
 import com.ty.ess.portal.dao.UserDao;
 import com.ty.ess.portal.dto.ResponseStructure;
 import com.ty.ess.portal.entity.User;
@@ -26,14 +27,17 @@ import com.ty.ess.portal.util.UserType;
 public class UserService {
 
 	@Autowired
-	UserDao userDao;
-	
+	private UserDao userDao;
+
+	@Autowired
+	private EmployeeLeaveDao employeeLeaveDao;
+
 	@Autowired
 	private AuthenticationManager authenticationManager;
-	
+
 	@Autowired
 	private UserDetailsService userDetailsService;
-	
+
 	@Autowired
 	private JwtHelper helper;
 
@@ -60,7 +64,7 @@ public class UserService {
 		return new ResponseEntity<ResponseStructure<User>>(HttpStatus.CREATED);
 
 	}
-	
+
 	public ResponseEntity<ResponseStructure<User>> saveManager(UserDto userDto, BindingResult result) {
 
 		if (result.hasErrors()) {
@@ -84,9 +88,9 @@ public class UserService {
 		return new ResponseEntity<ResponseStructure<User>>(HttpStatus.CREATED);
 
 	}
-	
+
 	public ResponseEntity<ResponseStructure<JwtResponse>> login(JwtRequest request) {
-		
+
 		doAuthenticate(request.getEmail(), request.getPassword());
 
 		UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
@@ -99,9 +103,9 @@ public class UserService {
 				.data(response).build();
 
 		return new ResponseEntity<ResponseStructure<JwtResponse>>(responseStructure, HttpStatus.OK);
-		
+
 	}
-	
+
 	private void doAuthenticate(String email, String password) {
 
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, password);
@@ -113,9 +117,7 @@ public class UserService {
 		}
 
 	}
+
 	
-//	public ResponseEntity<ResponseStructure<User>> acceptLeave(int leaveId) {
-//		
-//	}
-	
+
 }

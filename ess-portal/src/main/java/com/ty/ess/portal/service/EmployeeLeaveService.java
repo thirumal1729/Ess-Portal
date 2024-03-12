@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.ty.ess.portal.dao.EmployeeLeaveDao;
@@ -53,5 +54,46 @@ public class EmployeeLeaveService {
 			throw null;
 		}
 
+	}
+	
+	public ResponseEntity<ResponseStructure<EmployeeLeave>> acceptLeave(int leaveId) {
+		EmployeeLeave employeeLeave = this.employeeLeaveDao.findByLeaveId(leaveId);
+		if(employeeLeave != null) {
+			employeeLeave.setLeaveStatus(LeaveStatus.APPROVED);
+			employeeLeaveDao.createEmployeeLeaveRequest(employeeLeave);
+			ResponseStructure<EmployeeLeave> responseStructure = new ResponseStructure<EmployeeLeave>();
+			responseStructure.builder().statusCode(HttpStatus.OK.value()).message("Approved").data(employeeLeave);
+			
+			return new ResponseEntity<ResponseStructure<EmployeeLeave>>(responseStructure, HttpStatus.OK);
+			
+		} else {
+			throw new UsernameNotFoundException("Employee leave request not found");
+		}
+	}
+
+	public ResponseEntity<ResponseStructure<EmployeeLeave>> rejectLeave(int leaveId) {
+		EmployeeLeave employeeLeave = this.employeeLeaveDao.findByLeaveId(leaveId);
+		if (employeeLeave != null) {
+			employeeLeave.setLeaveStatus(LeaveStatus.REJECTED);
+			employeeLeaveDao.createEmployeeLeaveRequest(employeeLeave);
+			ResponseStructure<EmployeeLeave> responseStructure = new ResponseStructure<EmployeeLeave>();
+			responseStructure.builder().statusCode(HttpStatus.OK.value()).message("Rejected").data(employeeLeave);
+			
+			return new ResponseEntity<ResponseStructure<EmployeeLeave>>(responseStructure, HttpStatus.OK);
+		} else {
+			throw new UsernameNotFoundException("Employee leave request not found");
+		}
+	}
+	
+	public ResponseEntity<ResponseStructure<EmployeeLeave>> getAllLeaveRequests() {
+		List<EmployeeLeave> employeeLeaves = this.employeeLeaveDao.findAllLeaveRequests();
+		if(!employeeLeaves.isEmpty()) {
+			ResponseStructure<EmployeeLeave> responseStructure = new ResponseStructure<EmployeeLeave>();
+			responseStructure.builder().statusCode(HttpStatus.OK.value()).message("Success").data(employeeLeaves).build();
+			
+			return new ResponseEntity<ResponseStructure<EmployeeLeave>>(responseStructure, HttpStatus.OK);
+		} else {
+			throw null;
+		}
 	}
 }

@@ -23,18 +23,19 @@ public class SecurityConfig {
 
 	@Autowired
 	private JwtAuthenticationEntryPoint point;
-	
+
 	@Autowired
 	private JwtAuthenticationFilter filter;
-	
+
 	@Autowired
 	private UserDetailsService userDetailsService;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
 
 		http.csrf(csrf -> csrf.disable())
 			.cors(cors -> cors.disable())
@@ -48,22 +49,22 @@ public class SecurityConfig {
 			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		
 		http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
-		
+
 		return http.build();
 	}
-	
+
 	@Bean
 	public DaoAuthenticationProvider doDaoAuthenticationProvider() {
 		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
 		daoAuthenticationProvider.setUserDetailsService(userDetailsService);
 		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
-		
+
 		return daoAuthenticationProvider;
 	}
-	
+
 	@Bean
 	public MethodSecurityExpressionHandler methodSecurityExpressionHandler() {
-		
+
 		DefaultMethodSecurityExpressionHandler expressionHandler = new DefaultMethodSecurityExpressionHandler();
 		expressionHandler.setDefaultRolePrefix("");
 		return expressionHandler;

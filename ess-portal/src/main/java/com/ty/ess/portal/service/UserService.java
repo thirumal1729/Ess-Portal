@@ -78,6 +78,7 @@ public class UserService {
 		user.setName(userDto.getName());
 		user.setEmail(userDto.getEmail());
 		user.setPassword(userDto.getPassword());
+		user.setUserType(UserType.MANAGER);
 
 		user = userDao.saveUser(user);
 

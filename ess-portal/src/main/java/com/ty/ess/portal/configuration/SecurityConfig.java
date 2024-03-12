@@ -38,7 +38,7 @@ public class SecurityConfig {
 
 		http.csrf(csrf -> csrf.disable())
 			.cors(cors -> cors.disable())
-			.authorizeHttpRequests(auth -> auth.requestMatchers("/auth/login","/users/**").permitAll().requestMatchers("/employeeLeave/**")
+			.authorizeHttpRequests(auth -> auth.requestMatchers("/swagger-ui/index.html", "/auth/login","/users/**").permitAll().requestMatchers("/employeeLeave/**")
 					.authenticated()
 					.anyRequest()
 					.authenticated())

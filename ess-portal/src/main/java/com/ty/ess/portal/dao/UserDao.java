@@ -18,18 +18,13 @@ public class UserDao {
 	}
 
 	public User findUserByUserId(int id) {
-		
+
 		Optional<User> user = userRepository.findById(id);
-		if(user.isPresent())
-		{
+		if (user.isPresent()) {
 			return user.get();
-		}
-		else {
+		} else {
 			throw new UserNotFoundException();
 		}
 	}
 
 }
-   
-
-

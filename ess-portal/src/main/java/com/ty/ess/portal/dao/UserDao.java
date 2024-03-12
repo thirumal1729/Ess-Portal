@@ -14,4 +14,8 @@ public class UserDao {
 		return userRepository.save(user);
 	}
 
+	public User findUserByUserId(int id) {
+		return userRepository.findById(id).get();
+	}
+
 }

@@ -75,8 +75,10 @@ public class UserService {
 			throw new ValidationException(message);
 		}
 		User user = new User();
-		user.builder().name(userDto.getName()).email(userDto.getEmail()).password(userDto.getPassword())
-				.userType(UserType.MANAGER).build();
+		user.setName(userDto.getName());
+		user.setEmail(userDto.getEmail());
+		user.setPassword(userDto.getPassword());
+		user.setUserType(UserType.MANAGER);
 
 		user = userDao.saveUser(user);
 

@@ -17,7 +17,6 @@ import com.ty.ess.portal.entity.EmployeeLeave;
 import com.ty.ess.portal.entity.User;
 import com.ty.ess.portal.exception.ValidationException;
 import com.ty.ess.portal.payload.EmployeeLeaveDto;
-import com.ty.ess.portal.util.LeaveStatus;
 
 @Service
 public class EmployeeLeaveService {
@@ -27,7 +26,7 @@ public class EmployeeLeaveService {
 	@Autowired
 	private EmployeeLeaveDao employeeLeaveDao;
 
-	// create leave request
+	// Apply leave Request
 	public ResponseEntity<ResponseStructure<EmployeeLeave>> createLeaveRequest(int employeeId,
 			EmployeeLeaveDto employeeLeaveRequest, BindingResult result) {
 		if (result.hasErrors()) {
@@ -40,29 +39,31 @@ public class EmployeeLeaveService {
 		EmployeeLeave employeeLeave = new EmployeeLeave();
 		User user = userDao.findUserByUserId(employeeId);
 		if (user != null) {
-			employeeLeave.builder().leaveDate(employeeLeaveRequest.getLeaveDate()).leaveStatus(LeaveStatus.PENDING)
-					.user(user).build();
+			employeeLeave.setLeaveDate(employeeLeave.getLeaveDate());
 			employeeLeaveDao.createEmployeeLeaveRequest(employeeLeave);
 
 			ResponseStructure<EmployeeLeave> response = new ResponseStructure<EmployeeLeave>();
-			response.builder().statusCode(HttpStatus.CREATED.value()).message("Success").data(employeeLeave).build();
+			response.setStatusCode(HttpStatus.CREATED.value());
+			response.setMessage("Success");
+			response.setData(employeeLeave);
 			return new ResponseEntity<ResponseStructure<EmployeeLeave>>(response, HttpStatus.CREATED);
 		} else {
 			throw new UsernameNotFoundException("Employee Not Found..!");
 		}
 	}
 
-	// find employee by id
+	// find leave list by EmployeeId
 	public ResponseEntity<ResponseStructure<List<EmployeeLeave>>> findEmployeeLeaveByEmployeeId(int employeeId) {
 		List<EmployeeLeave> employeeLeaves = employeeLeaveDao.findEmployeeById(employeeId);
 		if (!employeeLeaves.isEmpty()) {
 			ResponseStructure<List<EmployeeLeave>> response = new ResponseStructure<List<EmployeeLeave>>();
-			response.builder().statusCode(HttpStatus.OK.value()).message("Success").data(employeeLeaves).build();
+			response.setStatusCode(HttpStatus.FOUND.value());
+			response.setMessage("Found");
+			response.setData(employeeLeaves);
 
 			return new ResponseEntity<ResponseStructure<List<EmployeeLeave>>>(response, HttpStatus.OK);
 		} else {
 			throw new UsernameNotFoundException("Employee Not Found..!");
 		}
-
 	}
 }

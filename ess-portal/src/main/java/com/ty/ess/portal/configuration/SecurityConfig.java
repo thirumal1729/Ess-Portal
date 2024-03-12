@@ -23,47 +23,43 @@ public class SecurityConfig {
 
 	@Autowired
 	private JwtAuthenticationEntryPoint point;
-	
+
 	@Autowired
 	private JwtAuthenticationFilter filter;
-	
+
 	@Autowired
 	private UserDetailsService userDetailsService;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-		http.csrf(csrf -> csrf.disable())
-			.cors(cors -> cors.disable())
-			.authorizeHttpRequests(auth -> auth.requestMatchers("/home/**")
-					.authenticated()
-					.requestMatchers("/auth/login","/auth/create-user","/auth/create-admin")
-					.permitAll()
-					.anyRequest()
-					.authenticated())
-			.exceptionHandling(ex -> ex.authenticationEntryPoint(point))
-			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-		
+		http.csrf(csrf -> csrf.disable()).cors(cors -> cors.disable())
+				.authorizeHttpRequests(auth -> auth.requestMatchers("/home/**").authenticated()
+						.requestMatchers("/auth/login", "/auth/create-user", "/auth/create-admin").permitAll()
+						.anyRequest().authenticated())
+				.exceptionHandling(ex -> ex.authenticationEntryPoint(point))
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
 		http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
-		
+
 		return http.build();
 	}
-	
+
 	@Bean
 	public DaoAuthenticationProvider doDaoAuthenticationProvider() {
 		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
 		daoAuthenticationProvider.setUserDetailsService(userDetailsService);
 		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
-		
+
 		return daoAuthenticationProvider;
 	}
-	
+
 	@Bean
 	public MethodSecurityExpressionHandler methodSecurityExpressionHandler() {
-		
+
 		DefaultMethodSecurityExpressionHandler expressionHandler = new DefaultMethodSecurityExpressionHandler();
 		expressionHandler.setDefaultRolePrefix("");
 		return expressionHandler;

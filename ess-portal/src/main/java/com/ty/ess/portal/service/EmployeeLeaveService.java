@@ -42,6 +42,8 @@ public class EmployeeLeaveService {
 		User user = userDao.findUserByUserId(employeeId);
 		if (user != null) {
 			employeeLeave.setLeaveDate(employeeLeave.getLeaveDate());
+			employeeLeave.setLeaveStatus(LeaveStatus.PENDING);
+			employeeLeave.setUser(user);
 			employeeLeaveDao.createEmployeeLeaveRequest(employeeLeave);
 
 			ResponseStructure<EmployeeLeave> response = new ResponseStructure<EmployeeLeave>();
@@ -68,17 +70,19 @@ public class EmployeeLeaveService {
 			throw new EmployeeLeaveRequestEmptyException("Employee leave request is empty");
 		}
 	}
-	
+
 	public ResponseEntity<ResponseStructure<EmployeeLeave>> acceptLeave(int leaveId) {
 		EmployeeLeave employeeLeave = this.employeeLeaveDao.findByLeaveId(leaveId);
-		if(employeeLeave != null) {
+		if (employeeLeave != null) {
 			employeeLeave.setLeaveStatus(LeaveStatus.APPROVED);
 			employeeLeaveDao.createEmployeeLeaveRequest(employeeLeave);
 			ResponseStructure<EmployeeLeave> responseStructure = new ResponseStructure<EmployeeLeave>();
-			responseStructure.builder().statusCode(HttpStatus.OK.value()).message("Approved").data(employeeLeave);
-			
+			responseStructure.setStatusCode(HttpStatus.OK.value());
+			responseStructure.setMessage("Approved");
+			responseStructure.setData(employeeLeave);
+
 			return new ResponseEntity<ResponseStructure<EmployeeLeave>>(responseStructure, HttpStatus.OK);
-			
+
 		} else {
 			throw new UsernameNotFoundException("Employee leave request not found");
 		}
@@ -90,24 +94,27 @@ public class EmployeeLeaveService {
 			employeeLeave.setLeaveStatus(LeaveStatus.REJECTED);
 			employeeLeaveDao.createEmployeeLeaveRequest(employeeLeave);
 			ResponseStructure<EmployeeLeave> responseStructure = new ResponseStructure<EmployeeLeave>();
-			responseStructure.builder().statusCode(HttpStatus.OK.value()).message("Rejected").data(employeeLeave);
-			
+			responseStructure.setStatusCode(HttpStatus.OK.value());
+			responseStructure.setMessage("Rejected");
+			responseStructure.setData(employeeLeave);
+
 			return new ResponseEntity<ResponseStructure<EmployeeLeave>>(responseStructure, HttpStatus.OK);
 		} else {
 			throw new UsernameNotFoundException("Employee leave request not found");
 		}
 	}
-	
+
 	public ResponseEntity<ResponseStructure<List<EmployeeLeave>>> getAllLeaveRequests() {
 		List<EmployeeLeave> employeeLeaves = this.employeeLeaveDao.findAllLeaveRequests();
-		if(!employeeLeaves.isEmpty()) {
+		if (!employeeLeaves.isEmpty()) {
 			ResponseStructure<List<EmployeeLeave>> responseStructure = new ResponseStructure<List<EmployeeLeave>>();
-			responseStructure.builder().statusCode(HttpStatus.OK.value()).message("Success").data(employeeLeaves).build();
-			
+			responseStructure.setStatusCode(HttpStatus.CREATED.value());
+			responseStructure.setMessage("Success");
+			responseStructure.setData(employeeLeaves);
+
 			return new ResponseEntity<ResponseStructure<List<EmployeeLeave>>>(responseStructure, HttpStatus.OK);
 		} else {
 			throw new EmployeeLeaveRequestEmptyException("Employee leave request is empty");
 		}
 	}
 }
-

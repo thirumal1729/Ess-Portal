@@ -9,5 +9,4 @@ public class EssPortalApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(EssPortalApplication.class, args);
 	}
-
 }

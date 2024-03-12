@@ -38,10 +38,8 @@ public class SecurityConfig {
 
 		http.csrf(csrf -> csrf.disable())
 			.cors(cors -> cors.disable())
-			.authorizeHttpRequests(auth -> auth.requestMatchers("/employeeLeave/**")
+			.authorizeHttpRequests(auth -> auth.requestMatchers("/auth/login","/users/**").permitAll().requestMatchers("/employeeLeave/**")
 					.authenticated()
-					.requestMatchers("/auth/login","/users/**")
-					.permitAll()
 					.anyRequest()
 					.authenticated())
 			.exceptionHandling(ex -> ex.authenticationEntryPoint(point))

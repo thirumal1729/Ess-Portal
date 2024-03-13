@@ -61,7 +61,7 @@ public class EmployeeLeaveService {
 		List<EmployeeLeave> employeeLeaves = employeeLeaveDao.findEmployeeById(employeeId);
 		if (!employeeLeaves.isEmpty()) {
 			ResponseStructure<List<EmployeeLeave>> response = new ResponseStructure<List<EmployeeLeave>>();
-			response.setStatusCode(HttpStatus.FOUND.value());
+			response.setStatusCode(HttpStatus.OK.value());
 			response.setMessage("Found");
 			response.setData(employeeLeaves);
 

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import com.ty.ess.portal.dao.EmployeeLeaveDao;
 import com.ty.ess.portal.dao.UserDao;
 import com.ty.ess.portal.dto.ResponseStructure;
 import com.ty.ess.portal.entity.User;
@@ -29,9 +28,6 @@ public class UserService {
 
 	@Autowired
 	private UserDao userDao;
-
-	@Autowired
-	private EmployeeLeaveDao employeeLeaveDao;
 
 	@Autowired
 	private AuthenticationManager authenticationManager;

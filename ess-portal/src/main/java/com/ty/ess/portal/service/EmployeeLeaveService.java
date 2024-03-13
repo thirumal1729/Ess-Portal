@@ -71,6 +71,7 @@ public class EmployeeLeaveService {
 		}
 	}
 
+	// approve leave request
 	public ResponseEntity<ResponseStructure<EmployeeLeave>> acceptLeave(int leaveId) {
 		EmployeeLeave employeeLeave = this.employeeLeaveDao.findByLeaveId(leaveId);
 		if (employeeLeave != null) {
@@ -88,6 +89,7 @@ public class EmployeeLeaveService {
 		}
 	}
 
+	// reject leave request
 	public ResponseEntity<ResponseStructure<EmployeeLeave>> rejectLeave(int leaveId) {
 		EmployeeLeave employeeLeave = this.employeeLeaveDao.findByLeaveId(leaveId);
 		if (employeeLeave != null) {
@@ -104,6 +106,7 @@ public class EmployeeLeaveService {
 		}
 	}
 
+	// fetch all leaves by manager
 	public ResponseEntity<ResponseStructure<List<EmployeeLeave>>> getAllLeaveRequests() {
 		List<EmployeeLeave> employeeLeaves = this.employeeLeaveDao.findAllLeaveRequests();
 		if (!employeeLeaves.isEmpty()) {

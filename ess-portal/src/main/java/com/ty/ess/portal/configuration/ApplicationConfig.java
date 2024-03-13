@@ -50,7 +50,7 @@ public class ApplicationConfig {
 
 		Info info = new Info().title("ESS Portal RESTful Web Service documentation").version("1.0")
 				.contact(contact).description("This API exposes endpoints to manage ESS.")
-				.termsOfService("https://www.essortal.com/terms").license(mitLicense);
+				.termsOfService("https://www.essportal.com/terms").license(mitLicense);
 
 		return new OpenAPI().info(info).servers(List.of(devServer, prodServer));
 	}

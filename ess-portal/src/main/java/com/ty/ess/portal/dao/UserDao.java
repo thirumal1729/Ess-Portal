@@ -15,10 +15,12 @@ public class UserDao {
 	@Autowired
 	UserRepository userRepository;
 
+	// creates new user
 	public User saveUser(User user) {
 		return userRepository.save(user);
 	}
 
+	// fetches user by id
 	public User findUserByUserId(int id) {
 
 		Optional<User> user = userRepository.findById(id);
@@ -28,7 +30,7 @@ public class UserDao {
 			throw new UserNotFoundException();
 		}
 	}
-	
+
 //	public User findUserByEmail(String email) {
 //		return this.userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException());
 //	}

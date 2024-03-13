@@ -41,11 +41,11 @@ public class UserService {
 
 	@Autowired
 	private JwtHelper helper;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	//performs validation and save employee operations
+	// performs validation and save employee operations
 	public ResponseEntity<ResponseStructure<User>> saveEmployee(UserDto userDto, BindingResult result) {
 
 		if (result.hasErrors()) {
@@ -72,7 +72,7 @@ public class UserService {
 
 	}
 
-	//performs validation and save manager operations
+	// performs validation and save manager operations
 	public ResponseEntity<ResponseStructure<User>> saveManager(UserDto userDto, BindingResult result) {
 
 		if (result.hasErrors()) {
@@ -95,11 +95,11 @@ public class UserService {
 		response.setMessage("Success");
 		response.setData(user);
 
-		return new ResponseEntity<ResponseStructure<User>>(response,HttpStatus.CREATED);
+		return new ResponseEntity<ResponseStructure<User>>(response, HttpStatus.CREATED);
 
 	}
 
-	//user login operations
+	// user login operations
 	public ResponseEntity<ResponseStructure<JwtResponse>> login(JwtRequest request) {
 
 		doAuthenticate(request.getEmail(), request.getPassword());
@@ -118,7 +118,7 @@ public class UserService {
 
 	}
 
-	//authenticate details present in database
+	// authenticate details present in database
 	private void doAuthenticate(String email, String password) {
 
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(email, password);
@@ -130,7 +130,5 @@ public class UserService {
 		}
 
 	}
-
-	
 
 }

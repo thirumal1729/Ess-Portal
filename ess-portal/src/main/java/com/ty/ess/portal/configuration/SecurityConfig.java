@@ -32,6 +32,14 @@ public class SecurityConfig {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	private static final String[] AUTH_WHITELIST = {
+			"/api/v1/auth/**",
+			"/v3/api-docs/**",
+			"/v3/api-docs.yaml/",
+			"/swagger-ui/**",
+			"/swagger-ui.html"
+	};
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -39,7 +47,9 @@ public class SecurityConfig {
 
 		http.csrf(csrf -> csrf.disable())
 			.cors(cors -> cors.disable())
-			.authorizeHttpRequests(auth -> auth.requestMatchers("/swagger-ui/index.html", "/auth/login","/users/**").permitAll().requestMatchers("/employeeLeave/**")
+			.authorizeHttpRequests(auth -> auth.requestMatchers(AUTH_WHITELIST)
+					.permitAll()
+					.requestMatchers("/auth/login","/users/**").permitAll().requestMatchers("/employeeLeave/**")
 					.authenticated()
 					.anyRequest()
 					.authenticated())

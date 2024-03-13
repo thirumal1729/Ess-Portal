@@ -41,7 +41,7 @@ public class EmployeeLeaveService {
 		EmployeeLeave employeeLeave = new EmployeeLeave();
 		User user = userDao.findUserByUserId(employeeId);
 		if (user != null) {
-			employeeLeave.setLeaveDate(employeeLeave.getLeaveDate());
+			employeeLeave.setLeaveDate(employeeLeaveRequest.getLeaveDate());
 			employeeLeave.setLeaveStatus(LeaveStatus.PENDING);
 			employeeLeave.setUser(user);
 			employeeLeaveDao.createEmployeeLeaveRequest(employeeLeave);

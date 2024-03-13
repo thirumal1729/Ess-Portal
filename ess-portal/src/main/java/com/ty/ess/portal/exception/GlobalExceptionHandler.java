@@ -17,18 +17,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
 		ResponseStructure<String> responseStructure = new ResponseStructure<String>();
 
-		responseStructure.builder().statusCode(HttpStatus.BAD_REQUEST.value()).message(exception.getMessage())
-				.data("Please Enter the valid details").build();
+		responseStructure.setStatusCode(HttpStatus.BAD_REQUEST.value());
+		responseStructure.setMessage(exception.getMessage());
+		responseStructure.setData("Please Enter the valid details");
 		return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@ExceptionHandler(UserNotFoundException.class)
 	public ResponseEntity<ResponseStructure<String>> catchUserNotFoundException(UserNotFoundException exception) {
 
 		ResponseStructure<String> responseStructure = new ResponseStructure<String>();
 
-		responseStructure.builder().statusCode(HttpStatus.BAD_REQUEST.value()).message(exception.getMessage())
-				.data("Please Enter ").build();
+		responseStructure.setStatusCode(HttpStatus.BAD_REQUEST.value());
+		responseStructure.setMessage(exception.getMessage());
+		responseStructure.setData("Please Enter valid User details");
 		return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.BAD_REQUEST);
 	}
 
@@ -36,17 +38,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<ResponseStructure<String>> catchBadCredentialsException(BadCredentialsException exception) {
 
 		ResponseStructure<String> responseStructure = new ResponseStructure<String>();
-		responseStructure.builder().statusCode(HttpStatus.FORBIDDEN.value()).message(exception.getMessage()).data("Credentials Invalid !!").build();
-		
+		responseStructure.setStatusCode(HttpStatus.FORBIDDEN.value());
+		responseStructure.setMessage(exception.getMessage());
+		responseStructure.setData("Invalid credentials!!");
 		return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.FORBIDDEN);
 	}
-	
+
 	@ExceptionHandler(EmployeeLeaveRequestEmptyException.class)
-	public ResponseEntity<ResponseStructure<String>> catchEmployeeLeaveRequestEmptyException(EmployeeLeaveRequestEmptyException exception) {
+	public ResponseEntity<ResponseStructure<String>> catchEmployeeLeaveRequestEmptyException(
+			EmployeeLeaveRequestEmptyException exception) {
 
 		ResponseStructure<String> responseStructure = new ResponseStructure<String>();
-		responseStructure.builder().statusCode(HttpStatus.NO_CONTENT.value()).message(exception.getMessage()).data("NO CONTENT").build();
-		
+		responseStructure.setStatusCode(HttpStatus.NO_CONTENT.value());
+		responseStructure.setMessage(exception.getMessage());
+		responseStructure.setData("No Content");
+
 		return new ResponseEntity<ResponseStructure<String>>(responseStructure, HttpStatus.NO_CONTENT);
 	}
 
